@@ -2,7 +2,7 @@
 import { css } from '@emotion/react'
 import './App.css';
 import { ThemeProvider } from '@emotion/react'
-import HeadBar from './component/HeadBar';
+import HeadBar from './base_component/HeadBar';
 import { routeComponent } from './navigation/routes';
 import { Routes } from 'react-router-dom'
 import {
@@ -11,6 +11,10 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import theme from './styles/Colors';
+import { CollectionProvider } from './contexts/CollectionContext';
+import { SelectedShowProvider } from './contexts/SelectedShowContext';
+import { ConfirmationDialogProvider } from './contexts/ConfirmationDialogContext';
+import ConfirmationDialog from './base_component/ConfirmationDialog';
 
 const client = new ApolloClient({
   uri: 'https://graphql.anilist.co',
@@ -20,22 +24,30 @@ const client = new ApolloClient({
 function App() {
   return (
     <div className="App">
-      <ApolloProvider client={client}>
-        <div css={css`
-        padding-top:15%;
+
+      <ThemeProvider theme={theme}>
+        <ApolloProvider client={client}>
+          <ConfirmationDialogProvider>
+            <CollectionProvider>
+              <SelectedShowProvider>
+                <div css={css`
+        padding-top:20%;
         margin-left: 2.5%;
         margin-right: 2.5%;
         @media (min-width: 60em) {
           padding-top:10%;
         }`}>
-          <ThemeProvider theme={theme}>
-            <HeadBar />
-            <Routes >
-              {routeComponent}
-            </Routes >
-          </ThemeProvider>
-        </div>
-      </ApolloProvider>
+                  <HeadBar />
+                  <Routes >
+                    {routeComponent}
+                  </Routes >
+                  <ConfirmationDialog/>
+                </div>
+              </SelectedShowProvider>
+            </CollectionProvider>
+          </ConfirmationDialogProvider>
+        </ApolloProvider>
+      </ThemeProvider>
     </div>
   );
 }

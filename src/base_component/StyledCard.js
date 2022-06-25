@@ -1,17 +1,21 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { Card, CardContent, CardMedia } from '@mui/material'
+import { Card, CardContent, CardMedia, CardActionArea } from '@mui/material'
 import PropTypes from 'prop-types'
 
 function StyledCard(props) {
     let {
         title,
         imgSrc,
-        data
+        data,
+        onClick
     } = props
 
-    return <Card
-        css={css`
+    return <CardActionArea
+        onClick={() => onClick && onClick(data)}
+    >
+        <Card
+            css={css`
         min-height: 100%;
       display: flex;
       flex-direction: column;
@@ -24,22 +28,22 @@ function StyledCard(props) {
         box-shadow: 0 4px 5px rgba(0,0,0,0.2);
       }
       `}
-    >
-        <CardMedia
-            component="img"
-            height="100vw"
-            css={css`
+        >
+            <CardMedia
+                component="img"
+                height="100vw"
+                css={css`
         background-size: cover;
         background-position: center center;`}
-            image={imgSrc}
-            alt="No Image"
-        />
-        <CardContent css={css`
+                image={imgSrc}
+                alt="No Image"
+            />
+            <CardContent css={css`
                 flex: 1;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;`}>
-            <h4 css={css`
+                <h4 css={css`
             flex: 1
               font-size: 2em;
               font-weight:bold;
@@ -48,16 +52,18 @@ function StyledCard(props) {
               @media (min-width: 60em) {
                   font-size: 1em;
               }`}>
-                {title}
-            </h4>
-        </CardContent>
-    </Card>
+                    {title}
+                </h4>
+            </CardContent>
+        </Card>
+    </CardActionArea>
 };
 
 StyledCard.propTypes = {
     title: PropTypes.string,
     imgSrc: PropTypes.string,
-    data: PropTypes.any
+    data: PropTypes.any,
+    onClick: PropTypes.func
 }
 
 export default StyledCard

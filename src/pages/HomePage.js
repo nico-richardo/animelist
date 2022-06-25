@@ -1,14 +1,13 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import Card from "../component/StyledCard"
-import { GET_LIST } from "../graphql/Queries";
+import { GET_LIST } from "../graphql/GetList";
 import { useQuery } from "@apollo/client";
 import { Fragment, useState } from "react";
-import styled from '@emotion/styled';
 import { MenuItem, Pagination, Select } from '@mui/material';
 import Loading from './Loading';
+import CardList from '../base_component/CardList';
 
-function Home(props) {
+function HomePage(props) {
     let [page, setPage] = useState(1);
     let [perPage, setPerPage] = useState(10);
     const options = [10, 20, 50, 100]
@@ -16,7 +15,7 @@ function Home(props) {
     let { data, loading, error } = useQuery(GET_LIST, {
         variables: { page: page, perPage: perPage },
     });
-    const totalPage = data?.Page?.pageInfo?.total ? data.Page.pageInfo.total / perPage : 0;
+    const totalPage = data?.Page?.pageInfo?.total ? Math.ceil(data.Page.pageInfo.total / perPage) : 0;
 
     if (loading) {
         return <Loading />
@@ -30,45 +29,20 @@ function Home(props) {
         )
     }
 
-    const CardList = data.Page.media.map((value, index) => {
-        return <Card
-            key={'card' + index}
-            title={value.title.english}
-            imgSrc={value.bannerImage}
-            data={value}
-        />
-    });
-
-    const CardListContainer = styled.div` 
-        width: 90%;
-        height: 100% /* height given for illustration */
-        position: relative;
-        margin: 0 auto;
-        display: grid;
-        
-        grid-template-columns: 1fr;
-        grid-template-rows: auto;
-        grid-gap: 20px;
-        
-        @media (min-width: 30em) {
-          grid-template-columns: 1fr 1fr;
-        }
-        
-        @media (min-width: 60em) {
-          grid-template-columns: repeat(5, 1fr);
-        }
-    `
-
     return <Fragment>
         <div css={css`
         display:inline-block;
         margin-bottom: 2.5%;
+        text-align: center;
         `}>
             <h1>Shows List</h1>
         </div>
-        <CardListContainer>
-            {CardList}
-        </CardListContainer>
+        <CardList
+          data={data}
+          dataField={'Page.media'}
+          titleField={'title.english'}
+          imageField={'bannerImage'}
+        />
         <div css={css`
         display:flex;
         margin:5vh 0;
@@ -121,4 +95,4 @@ function Home(props) {
         </div>
     </Fragment>
 }
-export default Home
+export default HomePage

@@ -1,17 +1,18 @@
-import Home from "../pages/Home";
+import HomePage from "../pages/HomePage";
 import { Route } from 'react-router-dom';
+import CollectionPage from "../pages/CollectionPage";
 
 const routes = [
     {
-        element: <Home/>,
+        element: <HomePage/>,
         menuTitle: 'Shows',
         path: '/',
         exact: true,
         isMenu: true
     },
     {
-        element: <Home/>,
-        menuTitle: 'Collection',
+        element: <CollectionPage/>,
+        menuTitle: 'My Collection',
         path: '/collection',
         isMenu: true
     }
