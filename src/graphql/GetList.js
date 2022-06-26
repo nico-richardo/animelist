@@ -14,8 +14,20 @@ export const GET_LIST = gql`
                     english
                     native
                 }
+                description
+                countryOfOrigin
+                episodes
+                startDate {
+                    year
+                    month
+                    day
+                }
+                status
                 type
                 genres
+                coverImage {
+                    large
+                }
                 bannerImage
             }
         }

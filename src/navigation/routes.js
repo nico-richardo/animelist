@@ -1,6 +1,7 @@
 import HomePage from "../pages/HomePage";
 import { Route } from 'react-router-dom';
 import CollectionPage from "../pages/CollectionPage";
+import ShowDetailPage from "../pages/ShowDetailPage";
 
 const routes = [
     {
@@ -12,9 +13,14 @@ const routes = [
     },
     {
         element: <CollectionPage/>,
-        menuTitle: 'My Collection',
-        path: '/collection',
+        menuTitle: 'My Collections',
+        path: '/collections',
         isMenu: true
+    },
+    {
+        element: <ShowDetailPage/>,
+        path: '/show-detail',
+        isMenu: false
     }
 ];
 

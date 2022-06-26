@@ -24,18 +24,18 @@ const client = new ApolloClient({
 function App() {
   return (
     <div className="App">
-
       <ThemeProvider theme={theme}>
         <ApolloProvider client={client}>
           <ConfirmationDialogProvider>
             <CollectionProvider>
               <SelectedShowProvider>
                 <div css={css`
-        padding-top:20%;
-        margin-left: 2.5%;
-        margin-right: 2.5%;
+        padding-top:25%;
         @media (min-width: 60em) {
-          padding-top:10%;
+          padding-top:9%;
+        }
+        @media (min-width: 80em) {
+          padding-top:7.5%;
         }`}>
                   <HeadBar />
                   <Routes >

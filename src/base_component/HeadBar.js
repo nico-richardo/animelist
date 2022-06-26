@@ -30,15 +30,23 @@ const HeadBar = () => {
     <img src="/images/headerImg.png" alt="headbar_icon" css={css`
     height: 60%;
     margin-left: 20px;
-    @media (min-width: 420px) {
+    @media (min-width: 30em) {
+      height: 60%;
+      margin-left: 35px;
+    }
+    @media (min-width: 60em) {
       height: 80%;
       margin-left: 40px;
     }`} />
     <div css={css`
     display: flex;
-    margin-left:15px;  
-    align
-    @media (min-width: 420px) {
+    margin-left:15px;
+    align-item:center; 
+    @media (min-width: 30em) {
+      height: 60%;
+      margin-left: 25px;
+    }
+    @media (min-width: 60em) {
       height: 80%;
       margin-left: 30px;
     }`}>
@@ -47,10 +55,12 @@ const HeadBar = () => {
           key={"headbar-nav" + index}
           css={css`
         margin: 10px;
+        margin-left:20px;
         flex-direction:column;
-        align-item: center;
+        align
         @media (min-width: 420px) {
           margin: 20px;
+          margin-left:40px;
         }`}>
           <Link
             css={css`
@@ -61,7 +71,10 @@ const HeadBar = () => {
               text-decoration: none;
               font-size: 1em;
               font-weight: bold;
-              @media (min-width: 420px) {
+              @media (min-width: 30em) {
+                font-size: 1em;
+              }
+              @media (min-width: 60px) {
                 font-size: 2em;
               }
             `}

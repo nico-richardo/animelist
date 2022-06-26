@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css, useTheme } from '@emotion/react'
-import { Fragment, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { removeCollection, useCollectionContext } from '../contexts/CollectionContext';
 import StyledList from '../base_component/StyledList';
 import { Button } from '@mui/material';
@@ -15,7 +15,7 @@ function CollectionPage(props) {
     let [open, setOpen] = useState(false);
 
     const collectionData = useMemo(() => Object.entries(items).map((e) => {
-        let firstImage = e[1].length > 0 ? e[1][0]['bannerImage'] : ''
+        let firstImage = e[1].length > 0 ? e[1][0]['coverImage']['large'] : ''
         return {
             label: e[0],
             image: firstImage
@@ -39,7 +39,9 @@ function CollectionPage(props) {
             }
         ));
     }
-    return <Fragment>
+    return <div css={css`
+    margin-left: 2.5%; 
+    margin-right: 2.5%;`}>
         <div css={css`
         display:inline-block;
         margin-bottom: 2.5%;
@@ -58,7 +60,7 @@ function CollectionPage(props) {
                 css={css`
             background-color:${theme.colors.red};
             &:hover {
-                background-color:${theme.colors.redDark};
+                background-color:${theme.colors.darkRed};
             }`}
                 variant="contained"
                 startIcon={<Add />}
@@ -77,6 +79,6 @@ function CollectionPage(props) {
             open={open}
             callback={toggleAddDialog}
         />
-    </Fragment>
+    </div>
 }
 export default CollectionPage

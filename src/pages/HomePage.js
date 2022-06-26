@@ -4,18 +4,37 @@ import { GET_LIST } from "../graphql/GetList";
 import { useQuery } from "@apollo/client";
 import { Fragment, useState } from "react";
 import { MenuItem, Pagination, Select } from '@mui/material';
-import Loading from './Loading';
+import Loading from '../component/Loading';
 import CardList from '../base_component/CardList';
+import { addShowCollection, useCollectionContext } from '../contexts/CollectionContext';
+import { setSelectedShow, useSelectedShowContext } from '../contexts/SelectedShowContext';
+import { useNavigate } from 'react-router-dom'
 
-function HomePage(props) {
+const HomePage = (props) => {
+    const options = [10, 20, 50, 100];
     let [page, setPage] = useState(1);
     let [perPage, setPerPage] = useState(10);
-    const options = [10, 20, 50, 100]
+    let { items: collections } = useCollectionContext();
+    let { items, dispatch } = useSelectedShowContext();
+    let navigate = useNavigate();
 
     let { data, loading, error } = useQuery(GET_LIST, {
         variables: { page: page, perPage: perPage },
     });
     const totalPage = data?.Page?.pageInfo?.total ? Math.ceil(data.Page.pageInfo.total / perPage) : 0;
+
+    const onClick = (data) => {
+        // this one is for adding to selected show
+        //let [ arrNewCollection, setArrNewCollection] = useState([]);
+        // dispatch(addShowCollection({
+        //     arrNewCollection: arrNewCollection,
+        //     data: data
+        // }));
+        dispatch(setSelectedShow({ data, collections }));
+        console.log(items)
+        navigate('/show-detail');
+    }
+
 
     if (loading) {
         return <Loading />
@@ -29,7 +48,10 @@ function HomePage(props) {
         )
     }
 
-    return <Fragment>
+    return <div
+        css={css`    margin-left: 2.5%; 
+    margin-right: 2.5%`}
+    >
         <div css={css`
         display:inline-block;
         margin-bottom: 2.5%;
@@ -38,10 +60,11 @@ function HomePage(props) {
             <h1>Shows List</h1>
         </div>
         <CardList
-          data={data}
-          dataField={'Page.media'}
-          titleField={'title.english'}
-          imageField={'bannerImage'}
+            data={data}
+            dataField={'Page.media'}
+            titleField={'title.english'}
+            imageField={'coverImage.large'}
+            onClick={onClick}
         />
         <div css={css`
         display:flex;
@@ -57,7 +80,7 @@ function HomePage(props) {
                     variant="outlined"
                     shape="rounded"
                     page={page}
-                    onChange={(e,page) => {setPage(page)}}
+                    onChange={(e, page) => { setPage(page) }}
                 />
             </div>
             <div css={css`
@@ -66,7 +89,7 @@ function HomePage(props) {
             align-items:center;
             justify-content:center;
             flex-direction:row`}>
-            <h4 css={css`
+                <h4 css={css`
             flex: 6
               font-size: 2em;
               margin: 0 5px;
@@ -75,8 +98,8 @@ function HomePage(props) {
               @media (min-width: 60em) {
                   font-size: 1em;
               }`}>
-                Data per page :
-            </h4>
+                    Data per page :
+                </h4>
                 <Select
                     value={perPage}
                     label="PerPage"
@@ -93,6 +116,6 @@ function HomePage(props) {
                 </Select>
             </div>
         </div>
-    </Fragment>
+    </div>
 }
 export default HomePage

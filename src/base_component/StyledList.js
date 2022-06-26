@@ -9,7 +9,7 @@ import getPropByString from '../helpers/getPropByString';
 import { Folder, Delete } from '@mui/icons-material';
 
 
-const SecondaryActionWrapper = ({ ...props  }) => <ListItemSecondaryAction {...props} />
+const SecondaryActionWrapper = ({ ...props }) => <ListItemSecondaryAction {...props} />
 SecondaryActionWrapper.muiName = "ListItemSecondaryAction";
 
 function StyledList(props) {
@@ -18,6 +18,7 @@ function StyledList(props) {
         dataField,
         titleField,
         imageField,
+        isDelete,
         onClick,
         onDelete
     } = props
@@ -54,9 +55,9 @@ function StyledList(props) {
                         </ListItemIcon>
                         <ListItemText primary={getPropByString(value, titleField)} />
                         <SecondaryActionWrapper>
-                            <IconButton edge="end" aria-label="delete" onClick={()=>onDelete(value)}>
+                            {isDelete ? <IconButton edge="end" aria-label="delete" onClick={() => onDelete(value)}>
                                 <Delete />
-                            </IconButton>
+                            </IconButton> : null}
                         </SecondaryActionWrapper>
                     </ListItem>
                 </List>
@@ -71,6 +72,7 @@ StyledList.propTypes = {
     data: PropTypes.any,
     dataField: PropTypes.string,
     onClick: PropTypes.func,
+    isDelete: PropTypes.func,
     onDelete: PropTypes.any,
     titleField: PropTypes.string,
     imageField: PropTypes.string

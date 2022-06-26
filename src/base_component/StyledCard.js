@@ -42,6 +42,7 @@ function StyledCard(props) {
                 flex: 1;
                 display: flex;
                 flex-direction: column;
+                background:  rgba(0,0,0,0.1);
                 justify-content: space-between;`}>
                 <h4 css={css`
             flex: 1

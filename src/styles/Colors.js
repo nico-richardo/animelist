@@ -7,7 +7,7 @@ const theme = createTheme ({
     text:'#f1f1f1',
     hovered:'#d2d2d2',
     red:'#FF0000',
-    redDark: '#7C0D0E'
+    darkRed: '#7C0D0E'
   }
 })
 

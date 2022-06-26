@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types'
 
 import { addCollection, useCollectionContext } from '../contexts/CollectionContext';
@@ -23,13 +23,7 @@ function AddCollectionDialog(props) {
     let [data, setData] = useState('');
     let [error, setError] = useState(false);
 
-    const helperText = useMemo(() => {
-        if (error) {
-            return 'Collection Name has been used or have special Char!'
-        } else {
-            return ''
-        }
-    }, [error]);
+    const helperText = error?  'Collection Name has been used or have special Char!' : '';
 
     const handleChange = (event) => {
         const currData = event.target.value;
@@ -59,7 +53,7 @@ function AddCollectionDialog(props) {
             <Dialog open={open} fullWidth onClose={handleClose}>
                 <DialogTitle
                     css={css`
-                    background-color: ${theme.colors.redDark};
+                    background-color: ${theme.colors.darkRed};
                     color: white;
                     font-weight:bold;
                 `}>
