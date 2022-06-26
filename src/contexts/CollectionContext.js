@@ -6,34 +6,7 @@ const CollectionContext = createContext();
 let initialItems = JSON.parse(localStorage.getItem('collections'));
 
 if (!initialItems) {
-    initialItems = {
-        "yrs": [
-            {
-                coverImage: {
-                    large: 'https://s4.anilist.co/file/anilistcdn/media/anime/banner/11061-8WkkTZ6duKpq.jpg'
-                }
-            },
-            {
-                coverImage: {
-                    large: ''
-                }
-            }
-        ],
-        "bb": [
-            {
-                coverImage:
-                {
-                    large: ''
-                }
-            },
-            {
-                coverImage: {
-                    large: 'https://s4.anilist.co/file/anilistcdn/media/anime/banner/11061-8WkkTZ6duKpq.jpg'
-                }
-            }
-        ],
-        "cc": []
-    }
+    initialItems = {}
 }
 
 // Actions
