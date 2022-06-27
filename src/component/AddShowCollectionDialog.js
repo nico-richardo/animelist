@@ -23,29 +23,29 @@ function AddShowCollectionDialog(props) {
     let { items: itemsSelected } = useSelectedShowContext();
     let { items: collections, dispatch } = useCollectionContext();
     let [strNewCollection, setStrNewCollection] = useState('');
-    let [arrNewCollections, setArrNewCollection] = useState([]);
+    let [arrNewCollections, setArrNewCollections] = useState([]);
 
     const selectedShow = itemsSelected.data;
-    const selectedCollection = itemsSelected.collections;
+    let selectedCollection = itemsSelected.collections;
     const objCurrKeys = Object.keys(selectedCollection);
     const collectionKeys = Object.keys(collections);
 
-    const dialogTitle = () => ("Add `" + selectedShow.title.english + "` to Collection")
+    const dialogTitle = "Add `" + selectedShow.title.english + "` to Collection"
 
     const handleDeleteChip = (value) => {
         let newCollections = arrNewCollections.filter(obj => obj !== value);
-        setArrNewCollection(newCollections);
+        setArrNewCollections(newCollections);
     }
 
     const handleChange = (event, newValue) => {
-        if (!newValue) {
-            return
-        }
         setStrNewCollection(newValue);
     };
 
     const handleAdd = () => {
-        setArrNewCollection(oldArray => [...oldArray, strNewCollection]);
+        if(arrNewCollections.includes(strNewCollection)) {
+            return;
+        }
+        setArrNewCollections(oldArray => [...oldArray, strNewCollection]);
     }
 
     const handleClose = () => {
@@ -53,9 +53,9 @@ function AddShowCollectionDialog(props) {
     };
 
     const handleOk = () => {
-        dispatch(addShowCollection(arrNewCollections));
+        dispatch(addShowCollection({arrNewCollections, data: selectedShow}));
         setStrNewCollection('');
-        setArrNewCollection([]);
+        setArrNewCollections([]);
         callback && callback();
     }
 
@@ -68,7 +68,7 @@ function AddShowCollectionDialog(props) {
                     color: white;
                     font-weight:bold;
                 `}>
-                    {dialogTitle()}
+                    {dialogTitle}
                 </DialogTitle>
                 <Divider />
                 <DialogContent>
@@ -77,32 +77,33 @@ function AddShowCollectionDialog(props) {
                         divider={<Divider orientation="horizontal" flexItem />}
                         spacing={1}
                     >
-                        <div css={css`margin-bottom: 24px; margin-top:23px;`}>
-                            <span css={css`color:#888888; margin-right:3px;`}>Add into : </span>
-                        </div>
-                        <Stack direction="row" spacing={1}>
-                            {objCurrKeys && objCurrKeys.map((value, index) => {
-                                return <Chip
-                                    key={'collectionChip' + index}
-                                    label={value}
-                                />
-                            })}
-                            {arrNewCollections && arrNewCollections.map((value, index) => {
-                                return <Chip
-                                    key={'newCollectionChip' + index}
-                                    label={value}
-                                    onDelete={handleDeleteChip}
-                                />
-                            })}
+                        <Stack direction="column" spacing={1}>
+                            <div css={css`margin-bottom: 24px; margin-top:23px;`}>
+                                <span css={css`color:#888888; margin-right:3px;`}>Add into : </span>
+                            </div>
+                            <Stack direction="row" spacing={1}>
+                                {objCurrKeys && objCurrKeys.map((value, index) => {
+                                    return <Chip
+                                        key={'collectionChip' + index}
+                                        label={value}
+                                    />
+                                })}
+                                {arrNewCollections && arrNewCollections.map((value, index) => {
+                                    return <Chip
+                                        key={'newCollectionChip' + index}
+                                        label={value}
+                                        onDelete={handleDeleteChip}
+                                    />
+                                })}
+                            </Stack>
                         </Stack>
                         <div css={css`flex-direction:row;display:flex;align-items: center;`}>
                             <span css={css`color:#888888;display: inline; margin-right: 20px;`}>New Collection : </span>
                             <Autocomplete
                                 css={css`display: inline;`}
-                                value={strNewCollection}
-                                onChange={handleChange}
+                                inputValue={strNewCollection}
+                                onInputChange={handleChange}
                                 selectOnFocus
-                                clearOnBlur
                                 handleHomeEndKeys
                                 id="add-new-collection"
                                 options={collectionKeys}
@@ -114,7 +115,13 @@ function AddShowCollectionDialog(props) {
                                 )}
                             />
                             <div css={css`flex-direction:row;display: inline; margin-left: 20px;`}>
-                                <Button variant='contained' onClick={handleAdd} color={theme.colors.darkRed}>
+                                <Button variant='contained' onClick={handleAdd}
+                                    disabled={!strNewCollection}
+                                    css={css`
+                                    background-color:${theme.colors.red};
+                                    &:hover {
+                                        background-color:${theme.colors.darkRed};
+                                    }`}>
                                     ADD
                                 </Button>
                             </div>

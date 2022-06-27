@@ -45,11 +45,14 @@ export function collectionReducer(state, action) {
             localStorage.setItem("collections", JSON.stringify(copy));
             return copy;
         case ADD_SHOW_COLLECTION:
-            let arrKeys = action.arrNewCollection;
-            arrKeys.forEach((key) => {
+            let arrKeys = action.arrNewCollections;
+            console.log(arrKeys);
+            arrKeys && arrKeys.forEach((key) => {
                 copy[key] = copy[key] ? [...copy[key]] : [];
                 copy[key].push(action.data);
             });
+            console.log(copy);
+            localStorage.setItem("collections", JSON.stringify(copy));
             return copy;
         case CLEAR_ALL:
             return {};
@@ -77,7 +80,7 @@ export function getCollection(showsId, collections, isObject = true) {
     if (!isObject) {
         collectionByShow = []
     }
-    Object.keys(collections).forEach(function (collection) {
+    collections && Object.keys(collections).forEach(function (collection) {
         const currCollection = collections[collection];
         const arrShowId = currCollection.reduce(function (newArr, show) {
             newArr.push(show.id);

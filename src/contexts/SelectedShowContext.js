@@ -22,8 +22,8 @@ export function setSelectedShow(data) {
   return { type: SET_SELECTED_SHOW, ...data };
 }
 
-export function setCollectionSelectedShow(data) {
-  return { type: SET_COLLECTION_SELECTED_SHOW, data };
+export function setCollectionSelectedShow(collections) {
+  return { type: SET_COLLECTION_SELECTED_SHOW, collections };
 }
 
 // Reducer
@@ -38,12 +38,12 @@ export function selectedshowReducer(state, action) {
       localStorage.setItem("currShow", JSON.stringify(currSelected));
       return currSelected;
     case SET_COLLECTION_SELECTED_SHOW:
-      currSelected =  {
+      const currSelected2 =  {
         ...state,
         collections: getCollection(state.data.id, action.collections)
       };
-      localStorage.setItem("currShow", JSON.stringify(currSelected));
-      return currSelected;
+      localStorage.setItem("currShow", JSON.stringify(currSelected2));
+      return currSelected2;
     default:
       return state;
   }

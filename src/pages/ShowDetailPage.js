@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { Fragment, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import { useCollectionContext } from '../contexts/CollectionContext';
 import StyledList from '../base_component/StyledList';
 import AddShowCollectionDialog from '../component/AddShowCollectionDialog'
@@ -9,8 +9,8 @@ import { setCollectionSelectedShow, useSelectedShowContext } from '../contexts/S
 import parse from 'html-react-parser';
 
 function ShowDetailPage(props) {
-    const { items : collections, dispatch } = useCollectionContext();
-    const { items: itemsSelected } = useSelectedShowContext();
+    const { items: collections } = useCollectionContext();
+    const { items: itemsSelected, dispatch } = useSelectedShowContext();
     const selectedShow = itemsSelected.data;
 
     const selectedCollection = itemsSelected.collections;
@@ -55,12 +55,13 @@ function ShowDetailPage(props) {
         alert('Page not done');
     }
 
-    const toggleAddDialog = (isNew = false) => {
+    const toggleAddDialog = () => {
         setOpen(!open);
-        if(isNew) {
-            dispatch(setCollectionSelectedShow(collections))
-        }
     }
+
+    useEffect(() => {
+        dispatch(setCollectionSelectedShow(collections));
+    }, [collections, dispatch])
 
     return <Fragment>
         <div css={css`
@@ -181,7 +182,7 @@ function ShowDetailPage(props) {
         </Stack>
         <AddShowCollectionDialog
             open={open}
-            callback={() => toggleAddDialog(true)}
+            callback={toggleAddDialog}
         />
 
     </Fragment>
