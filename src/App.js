@@ -15,6 +15,7 @@ import { CollectionProvider } from './contexts/CollectionContext';
 import { SelectedShowProvider } from './contexts/SelectedShowContext';
 import { ConfirmationDialogProvider } from './contexts/ConfirmationDialogContext';
 import ConfirmationDialog from './base_component/ConfirmationDialog';
+import { SelectedCollectionProvider } from './contexts/SelectedCollectionContext';
 
 const client = new ApolloClient({
   uri: 'https://graphql.anilist.co',
@@ -28,8 +29,9 @@ function App() {
         <ApolloProvider client={client}>
           <ConfirmationDialogProvider>
             <CollectionProvider>
-              <SelectedShowProvider>
-                <div css={css`
+              <SelectedCollectionProvider>
+                <SelectedShowProvider>
+                  <div css={css`
         padding-top:25%;
         @media (min-width: 60em) {
           padding-top:9%;
@@ -37,13 +39,14 @@ function App() {
         @media (min-width: 80em) {
           padding-top:7.5%;
         }`}>
-                  <HeadBar />
-                  <Routes >
-                    {routeComponent}
-                  </Routes >
-                  <ConfirmationDialog/>
-                </div>
-              </SelectedShowProvider>
+                    <HeadBar />
+                    <Routes >
+                      {routeComponent}
+                    </Routes >
+                    <ConfirmationDialog />
+                  </div>
+                </SelectedShowProvider>
+              </SelectedCollectionProvider>
             </CollectionProvider>
           </ConfirmationDialogProvider>
         </ApolloProvider>

@@ -7,12 +7,16 @@ import { Button } from '@mui/material';
 import { Add } from '@mui/icons-material';
 import { showConfirmationDialog, useConfirmationDialogContext } from '../contexts/ConfirmationDialogContext';
 import AddCollectionDialog from '../component/AddCollectionDialog';
+import { useNavigate } from 'react-router-dom'
+import { setSelectedCollection, useSelectedCollectionContext } from '../contexts/SelectedCollectionContext';
 
 function CollectionPage(props) {
     const theme = useTheme();
     const { items, dispatch } = useCollectionContext();
     const { dispatch: dispatchDialog } = useConfirmationDialogContext();
+    const { dispatch: dispatchCollection } = useSelectedCollectionContext();
     let [open, setOpen] = useState(false);
+    let navigate = useNavigate();
 
     const collectionData = useMemo(() => Object.entries(items).map((e) => {
         let firstImage = e[1].length > 0 ? e[1][0]['coverImage']['large'] : ''
@@ -23,7 +27,11 @@ function CollectionPage(props) {
     }), [items])
 
     const goToCollectionDetail = (value, index) => {
-        alert('Page not done');
+        dispatchCollection(setSelectedCollection({
+            label: value.label,
+            data: items[value.label]
+        }));
+        navigate('/collection-detail');
     }
 
     const toggleAddDialog = () => {

@@ -2,6 +2,7 @@ import HomePage from "../pages/HomePage";
 import { Route } from 'react-router-dom';
 import CollectionPage from "../pages/CollectionPage";
 import ShowDetailPage from "../pages/ShowDetailPage";
+import CollectionDetailPage from "../pages/CollectionDetailPage";
 
 const routes = [
     {
@@ -20,6 +21,11 @@ const routes = [
     {
         element: <ShowDetailPage/>,
         path: '/show-detail',
+        isMenu: false
+    },
+    {
+        element: <CollectionDetailPage/>,
+        path: '/collection-detail',
         isMenu: false
     }
 ];

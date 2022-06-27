@@ -46,6 +46,7 @@ function AddShowCollectionDialog(props) {
             return;
         }
         setArrNewCollections(oldArray => [...oldArray, strNewCollection]);
+        setStrNewCollection('');
     }
 
     const handleClose = () => {

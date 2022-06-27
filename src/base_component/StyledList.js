@@ -72,7 +72,7 @@ StyledList.propTypes = {
     data: PropTypes.any,
     dataField: PropTypes.string,
     onClick: PropTypes.func,
-    isDelete: PropTypes.func,
+    isDelete: PropTypes.bool,
     onDelete: PropTypes.any,
     titleField: PropTypes.string,
     imageField: PropTypes.string

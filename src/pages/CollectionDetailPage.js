@@ -1,26 +1,22 @@
 /** @jsxImportSource @emotion/react */
 import { css } from '@emotion/react'
-import { GET_LIST } from "../graphql/GetList";
-import { useQuery } from "@apollo/client";
 import { useState } from "react";
-import { MenuItem, Pagination, Select } from '@mui/material';
-import Loading from '../component/Loading';
+import { MenuItem, Pagination, Select, Stack } from '@mui/material';
 import CardList from '../base_component/CardList';
-import { useCollectionContext } from '../contexts/CollectionContext';
-import { setSelectedShow, useSelectedShowContext } from '../contexts/SelectedShowContext';
-import { useNavigate } from 'react-router-dom'
+import { deleteShowCollection, useCollectionContext } from '../contexts/CollectionContext';
+import { setSelectedShow } from '../contexts/SelectedShowContext';
+import { useNavigate } from 'react-router-dom';
+import { setSelectedCollection, useSelectedCollectionContext } from '../contexts/SelectedCollectionContext';
 
-const HomePage = (props) => {
+const CollectionDetailPage = (props) => {
     const options = [10, 20, 50, 100];
     let [page, setPage] = useState(1);
     let [perPage, setPerPage] = useState(10);
-    let { items: collections } = useCollectionContext();
-    let { dispatch } = useSelectedShowContext();
+    let { items: collections, dispatch:dispatchCollections } = useCollectionContext();
+    let { items, dispatch } = useSelectedCollectionContext();
     let navigate = useNavigate();
 
-    let { data, loading, error } = useQuery(GET_LIST, {
-        variables: { page: page, perPage: perPage },
-    });
+    let  data = items.data;
     const totalPage = data?.Page?.pageInfo?.total ? Math.ceil(data.Page.pageInfo.total / perPage) : 0;
 
     const onClick = (data) => {
@@ -28,18 +24,17 @@ const HomePage = (props) => {
         navigate('/show-detail');
     }
 
-
-    if (loading) {
-        return <Loading />
+    const handleDelete = (data) => {
+        dispatchCollections(deleteShowCollection({ 
+            label: items.label,
+            data: data
+        }))
+        dispatch(setSelectedCollection({
+            label: items.label,
+            data: collections[items.label]
+        }))
     }
 
-    if (error) {
-        return (
-            <div>
-                ERROR
-            </div>
-        )
-    }
 
     return <div
         css={css`    margin-left: 2.5%; 
@@ -50,13 +45,18 @@ const HomePage = (props) => {
         margin-bottom: 2.5%;
         text-align: center;
         `}>
-            <h1>Shows List</h1>
+            <Stack flexDirection="column">
+            <h2 css={css`margin:0px;`}>Collection Detail</h2>
+            <h1 css={css`text-decoration:underline;margin:0px;margin-bottom:20px;`}>{items.label}</h1>
+            </Stack>
         </div>
         <CardList
             data={data}
-            dataField={'Page.media'}
+            dataField={''}
             titleField={'title.english'}
             imageField={'coverImage.large'}
+            isDelete
+            onDelete={handleDelete}
             onClick={onClick}
         />
         <div css={css`
@@ -111,4 +111,4 @@ const HomePage = (props) => {
         </div>
     </div>
 }
-export default HomePage
+export default CollectionDetailPage

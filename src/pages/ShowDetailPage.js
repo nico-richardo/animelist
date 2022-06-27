@@ -7,11 +7,15 @@ import AddShowCollectionDialog from '../component/AddShowCollectionDialog'
 import { Box, Button, CardMedia, Divider, Stack } from '@mui/material';
 import { setCollectionSelectedShow, useSelectedShowContext } from '../contexts/SelectedShowContext';
 import parse from 'html-react-parser';
+import { setSelectedCollection, useSelectedCollectionContext } from '../contexts/SelectedCollectionContext';
+import { useNavigate } from 'react-router-dom';
 
 function ShowDetailPage(props) {
     const { items: collections } = useCollectionContext();
     const { items: itemsSelected, dispatch } = useSelectedShowContext();
+    const { dispatch: dispatchCollection } = useSelectedCollectionContext();
     const selectedShow = itemsSelected.data;
+    let navigate = useNavigate();
 
     const selectedCollection = itemsSelected.collections;
     let [open, setOpen] = useState(false);
@@ -52,7 +56,11 @@ function ShowDetailPage(props) {
     }
 
     const goToCollectionDetail = (value, index) => {
-        alert('Page not done');
+        dispatchCollection(setSelectedCollection({
+            label: value.label,
+            data: collections[value.label]
+        }));
+        navigate('/collection-detail');
     }
 
     const toggleAddDialog = () => {

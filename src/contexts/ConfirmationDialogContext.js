@@ -17,7 +17,6 @@ export const HIDE_CONFIRMATION_DIALOG = "HIDE_CONFIRMATION_DIALOG";
 
 // Action creators
 export function showConfirmationDialog(data) {
-    console.log('first context',{ type: SHOW_CONFIRMATION_DIALOG, ...data})
     return { type: SHOW_CONFIRMATION_DIALOG, ...data};
 }
 

@@ -9,6 +9,8 @@ function CardList(props) {
         dataField,
         titleField,
         imageField,
+        isDelete,
+        onDelete,
         onClick
     } = props
     const CardList = getPropByString(data, dataField).map((value, index) => {
@@ -16,6 +18,8 @@ function CardList(props) {
             key={'card' + index}
             title={getPropByString(value, titleField)}
             imgSrc={getPropByString(value, imageField)}
+            isDelete={isDelete}
+            onDelete={onDelete}
             data={value}
             onClick={onClick}
         />
@@ -51,6 +55,8 @@ CardList.propTypes = {
     dataField: PropTypes.string,
     titleField: PropTypes.string,
     imageField: PropTypes.string,
+    isDelete: PropTypes.bool,
+    onDelete: PropTypes.func,
     onClick: PropTypes.func
 }
 

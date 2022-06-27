@@ -13,6 +13,7 @@ if (!initialItems) {
 export const ADD_COLLECTION = "ADD_COLLECTION";
 export const REMOVE_COLLECTION = "REMOVE_COLLECTION";
 export const ADD_SHOW_COLLECTION = "ADD_SHOW_COLLECTION";
+export const DELETE_SHOW_COLLECTION = "DELETE_SHOW_COLLECTION";
 export const CLEAR_ALL = "CLEAR_ALL";
 
 // Action creators
@@ -26,6 +27,11 @@ export function removeCollection(label) {
 
 export function addShowCollection(data) {
     return { type: ADD_SHOW_COLLECTION, ...data };
+}
+
+export function deleteShowCollection(data) {
+    return { type: DELETE_SHOW_COLLECTION, ...data };
+
 }
 
 export function clearAll() {
@@ -46,12 +52,16 @@ export function collectionReducer(state, action) {
             return copy;
         case ADD_SHOW_COLLECTION:
             let arrKeys = action.arrNewCollections;
-            console.log(arrKeys);
             arrKeys && arrKeys.forEach((key) => {
                 copy[key] = copy[key] ? [...copy[key]] : [];
                 copy[key].push(action.data);
             });
-            console.log(copy);
+            localStorage.setItem("collections", JSON.stringify(copy));
+            return copy;
+        case DELETE_SHOW_COLLECTION:
+            let objShow = action.data;
+            let key = action.label;
+            copy[key] = copy[key].filter( obj => obj.id !== objShow.id);
             localStorage.setItem("collections", JSON.stringify(copy));
             return copy;
         case CLEAR_ALL:
